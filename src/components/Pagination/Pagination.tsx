@@ -37,9 +37,18 @@ const Pagination: FC<PaginationProps> = ({
         </button>
       </li>
       {startPage > 1 && (
-        <li className="page-item disabled">
-          <span className="page-link">...</span>
-        </li>
+        <>
+          <li className="page-item">
+            <button className="page-link" onClick={() => onChange(1)}>
+              1
+            </button>
+          </li>
+          {startPage > 2 && (
+            <li className="page-item disabled">
+              <span className="page-link">...</span>
+            </li>
+          )}
+        </>
       )}
       {_.map(pageNumbers,(number) => (
         <li
@@ -52,9 +61,18 @@ const Pagination: FC<PaginationProps> = ({
         </li>
       ))}
       {endPage < pageCount && (
-        <li className="page-item disabled">
-          <span className="page-link">...</span>
-        </li>
+        <>
+          {endPage < pageCount - 1 && (
+            <li className="page-item disabled">
+              <span className="page-link">...</span>
+            </li>
+          )}
+          <li className="page-item">
+            <button className="page-link" onClick={() => onChange(pageCount)}>
+              {pageCount}
+            </button>
+          </li>
+        </>
       )}
       <li className={`page-item${currentPage === pageCount ? ' disabled' : ''}`}>
         <button className="page-link" onClick={handleNextClick}>

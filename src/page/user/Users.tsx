@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useCallback, useEffect } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import ScrollableTable from "../../components/Table/ScrollableTable";
 import columns from "../../data/columns";
@@ -25,7 +25,9 @@ const Users: React.FC = () => {
                     _limit: pageSize,
                 }
                 if (querySearch) option.firstName = querySearch;
-                const response = await searchUsers(option);
+                const [response] = await Promise.all([
+                    searchUsers(option),
+                ]);
                 store.dispatch(setUsers(response));
             } catch (error) {
                 console.log('Failed to fetch data: ', error);
@@ -33,21 +35,23 @@ const Users: React.FC = () => {
         }
         fetchData();
     }, [currentPage, pageSize, querySearch]);
-    const handlePageChange = (pageNumber: number): void => {
-        store.dispatch(setCurrentPage(pageNumber));
-    };
 
-    const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    const handlePageChange = useCallback((pageNumber: number): void => {
+        store.dispatch(setCurrentPage(pageNumber));
+    }, []);
+    
+    const handleSelectChange = useCallback((event: ChangeEvent<HTMLSelectElement>): void => {
         const selectedPageSize = parseInt(event.target.value, 10);
         store.dispatch(setPageSize(selectedPageSize));
-    };
-
+        store.dispatch(setCurrentPage(1));
+    }, []);
+    
+    const handleSearchChange = useCallback((value: string): void => {
+        store.dispatch(setQuerySearch(value));
+    }, []);
+    
     const showResult = (): string => `Showing ${startIndex} to ${endIndex} of ${totalUser} entries`;
 
-
-    const handleSearchChange = (value: string): void => {
-        store.dispatch(setQuerySearch(value));
-    };
     return (
         <>
             <div className="container">
