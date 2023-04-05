@@ -39,17 +39,17 @@ const Users: React.FC = () => {
     const handlePageChange = useCallback((pageNumber: number): void => {
         store.dispatch(setCurrentPage(pageNumber));
     }, []);
-    
+
     const handleSelectChange = useCallback((event: ChangeEvent<HTMLSelectElement>): void => {
         const selectedPageSize = parseInt(event.target.value, 10);
         store.dispatch(setPageSize(selectedPageSize));
         store.dispatch(setCurrentPage(1));
     }, []);
-    
+
     const handleSearchChange = useCallback((value: string): void => {
         store.dispatch(setQuerySearch(value));
     }, []);
-    
+
     const showResult = (): string => `Showing ${startIndex} to ${endIndex} of ${totalUser} entries`;
 
     return (
@@ -59,16 +59,11 @@ const Users: React.FC = () => {
                     <PageSizeSelector pageSize={pageSize} handleSelectChange={handleSelectChange} />
                     <SearchInput onSearchChange={handleSearchChange} />
                 </div>
-                <ScrollableTable
-                    columns={columns}
-                    data={data}
-                />
+                <div className="table-container">
+                    <ScrollableTable columns={columns} data={data} />
+                </div>
                 <div className="pagination-container">
-                    <Pagination
-                        pageCount={pageCount}
-                        currentPage={currentPage}
-                        onChange={handlePageChange}
-                    />
+                    <Pagination pageCount={pageCount} currentPage={currentPage} onChange={handlePageChange} />
                 </div>
                 <div className="rows-count">{showResult()}</div>
             </div>

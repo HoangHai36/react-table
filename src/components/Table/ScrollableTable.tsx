@@ -26,26 +26,24 @@ const ScrollableTable: React.FC<ScrollableTableProps> = ({ data, columns }) => {
   }, [handleKeyDown]);
 
   return (
-    <div className="table-container">
-      <table className="table table-hover table-bordered table-responsive">
-        <thead className="thead-light">
-          <tr>
-            {_.map(columns,(col: string, index: number) => (
-              <th key={index} className="text-truncate">{col}</th>
+    <table className="table table-hover table-bordered table-responsive">
+      <thead className="thead-light">
+        <tr>
+          {_.map(columns, (col: string, index: number) => (
+            <th key={index} className="text-truncate">{col}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {_.map(data, (user: User, index: number) => (
+          <tr key={index} className={index === selectedRowIndex ? 'highlight' : ''}>
+            {_.map(_.values(user), (value, index) => (
+              <td key={index} className="text-truncate">{value}</td>
             ))}
           </tr>
-        </thead>
-        <tbody>
-          {_.map(data,(user: User, index: number) => (
-            <tr key={index} className={index === selectedRowIndex ? 'highlight' : ''}>
-              {_.map(_.values(user),(value, index) => (
-                <td key={index} className="text-truncate">{value}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
