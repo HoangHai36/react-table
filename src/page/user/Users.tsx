@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { ChangeEvent, useEffect } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import ScrollableTable from "../../components/Table/ScrollableTable";
